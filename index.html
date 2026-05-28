@@ -6,7 +6,6 @@
 <title>Sistema de Vez – Emissora</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
 <style>
-  /* ── Reset & Tokens ───────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -34,7 +33,6 @@
     overflow-x: hidden;
   }
 
-  /* ── Noise overlay ───────────────────────────────────── */
   body::before {
     content: '';
     position: fixed; inset: 0; z-index: 0;
@@ -42,10 +40,8 @@
     pointer-events: none;
   }
 
-  /* ── Layout ───────────────────────────────────────────── */
   .app { position: relative; z-index: 1; max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
 
-  /* ── Header ───────────────────────────────────────────── */
   header {
     display: flex; align-items: center; justify-content: space-between;
     padding: 28px 0 24px;
@@ -69,7 +65,6 @@
   }
   .btn-link:hover { color: var(--text); border-color: var(--muted); }
 
-  /* ── Tabs ─────────────────────────────────────────────── */
   .tabs {
     display: flex; gap: 4px;
     background: var(--surface); border: 1px solid var(--border);
@@ -83,12 +78,11 @@
   }
   .tab.active { background: var(--accent); color: #fff; }
 
-  /* ── Section panels ────────────────────────────────────── */
   .panel { display: none; }
   .panel.active { display: block; animation: fadeUp .3s ease; }
   @keyframes fadeUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:none} }
 
-  /* ── Vez Card ─────────────────────────────────────────── */
+  /* ── Vez Card ── */
   .vez-hero {
     background: linear-gradient(135deg, var(--surface2) 0%, #1e1030 100%);
     border: 1px solid var(--border);
@@ -129,7 +123,7 @@
   }
   .btn-pular:hover { border-color: var(--gold); color: var(--gold); }
 
-  /* ── Atendimento Form ─────────────────────────────────── */
+  /* ── Form ── */
   .card {
     background: var(--surface); border: 1px solid var(--border);
     border-radius: var(--radius); padding: 28px 32px; margin-bottom: 20px;
@@ -156,65 +150,38 @@
   }
   textarea { min-height: 100px; }
 
+  /* ── Botão único de envio ── */
   .btn-primary {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-family: var(--font-head); font-weight: 700; font-size: 1rem;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    color: #fff; border: none; border-radius: 10px;
-    padding: 14px 32px; cursor: pointer; width: 100%; margin-top: 8px;
+    display: flex; align-items: center; justify-content: center; gap: 10px;
+    font-family: var(--font-head); font-weight: 700; font-size: 1.05rem;
+    background: linear-gradient(135deg, #075e54, #128c7e);
+    color: #fff; border: none; border-radius: 12px;
+    padding: 16px 32px; cursor: pointer; width: 100%; margin-top: 8px;
     transition: opacity .2s, transform .1s;
-    box-shadow: 0 4px 24px rgba(232,56,79,.35);
+    box-shadow: 0 4px 28px rgba(7,94,84,.45);
+    position: relative; overflow: hidden;
   }
   .btn-primary:hover { opacity: .9; }
   .btn-primary:active { transform: scale(.98); }
-
-  .wpp-icon { font-size: 1.3rem; }
-
-  /* ── Botões de envio ──────────────────────────────────── */
-  .btn-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 8px; }
-  @media(max-width:560px){ .btn-row { grid-template-columns: 1fr; } }
-
-  .btn-grupo {
-    display: flex; align-items: center; justify-content: center; gap: 8px;
-    font-family: var(--font-head); font-weight: 700; font-size: .95rem;
-    background: linear-gradient(135deg, #075e54, #128c7e);
-    color: #fff; border: none; border-radius: 10px;
-    padding: 14px 20px; cursor: pointer; width: 100%;
-    transition: opacity .2s, transform .1s;
-    box-shadow: 0 4px 20px rgba(7,94,84,.4);
+  .btn-primary .wpp-icon { font-size: 1.4rem; }
+  .btn-hint {
+    font-size: .72rem; font-weight: 400; opacity: .75;
+    display: block; margin-top: 2px; letter-spacing: .01em;
   }
-  .btn-grupo:hover { opacity: .9; }
-  .btn-grupo:active { transform: scale(.98); }
-  .btn-grupo:disabled { opacity: .4; cursor: not-allowed; }
 
-  /* ── Config grupo ─────────────────────────────────────── */
+  /* ── Aviso grupo ── */
   .grupo-config {
     display: flex; align-items: center; gap: 10px;
-    background: rgba(7,94,84,.08); border: 1px solid rgba(18,140,126,.2);
     border-radius: 10px; padding: 12px 16px; margin-bottom: 16px;
     font-size: .82rem; color: var(--muted);
+    background: rgba(7,94,84,.08); border: 1px solid rgba(18,140,126,.2);
   }
+  .grupo-config.warn { background: rgba(232,56,79,.06); border-color: rgba(232,56,79,.2); }
   .grupo-config a { color: #128c7e; text-decoration: none; font-weight: 600; }
   .grupo-config a:hover { text-decoration: underline; }
   .grupo-config .gc-icon { font-size: 1.1rem; flex-shrink: 0; }
 
-  /* link do grupo no card de vendedoras */
-  .grupo-link-card {
-    background: var(--surface2); border: 1px dashed var(--border);
-    border-radius: var(--radius); padding: 16px 20px; margin-top: 8px;
-    display: flex; align-items: center; gap: 12px; font-size: .85rem;
-  }
-  .grupo-link-card .gl-label { color: var(--muted); flex: 1; }
-  .grupo-link-card input { flex: 2; margin: 0; font-size: .85rem; padding: 8px 12px; }
-  .btn-save-link {
-    font-family: var(--font-head); font-weight: 700; font-size: .8rem;
-    background: var(--surface); border: 1px solid var(--border);
-    color: var(--text); border-radius: 8px; padding: 9px 16px;
-    cursor: pointer; white-space: nowrap; transition: all .2s; flex-shrink: 0;
-  }
-  .btn-save-link:hover { border-color: var(--green); color: var(--green); }
-
-  /* ── Vendedoras cadastro ─────────────────────────────── */
+  /* ── Vendedores ── */
   .vendedoras-grid {
     display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: 16px; margin-bottom: 24px;
@@ -239,7 +206,7 @@
     font-size: .65rem; font-weight: 700; letter-spacing: .06em;
     background: var(--accent); color: #fff; border-radius: 99px; padding: 2px 8px;
   }
-  .v-actions { display: flex; gap: 6px; margin-top: 0; }
+  .v-actions { display: flex; gap: 6px; }
   .btn-icon {
     background: transparent; border: 1px solid var(--border);
     color: var(--muted); border-radius: 6px; width: 30px; height: 30px;
@@ -249,17 +216,30 @@
   .btn-icon:hover { border-color: var(--accent); color: var(--accent); }
   .btn-icon.del:hover { border-color: #e74c3c; color: #e74c3c; }
 
-  /* ── Histórico ────────────────────────────────────────── */
+  /* ── Link grupo ── */
+  .grupo-link-card {
+    background: var(--surface2); border: 1px dashed var(--border);
+    border-radius: var(--radius); padding: 16px 20px; margin-top: 8px;
+    display: flex; align-items: center; gap: 12px; font-size: .85rem;
+  }
+  .grupo-link-card .gl-label { color: var(--muted); flex: 1; white-space: nowrap; }
+  .grupo-link-card input { flex: 2; margin: 0; font-size: .85rem; padding: 8px 12px; }
+  .btn-save-link {
+    font-family: var(--font-head); font-weight: 700; font-size: .8rem;
+    background: var(--surface); border: 1px solid var(--border);
+    color: var(--text); border-radius: 8px; padding: 9px 16px;
+    cursor: pointer; white-space: nowrap; transition: all .2s; flex-shrink: 0;
+  }
+  .btn-save-link:hover { border-color: var(--green); color: var(--green); }
+
+  /* ── Histórico ── */
   .hist-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
   .hist-table th {
     text-align: left; font-family: var(--font-head); font-size: .72rem; font-weight: 700;
     letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
     padding: 0 12px 12px; border-bottom: 1px solid var(--border);
   }
-  .hist-table td {
-    padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,.04);
-    vertical-align: top;
-  }
+  .hist-table td { padding: 14px 12px; border-bottom: 1px solid rgba(255,255,255,.04); vertical-align: top; }
   .hist-table tr:last-child td { border-bottom: none; }
   .hist-table tr:hover td { background: rgba(255,255,255,.02); }
   .badge-nome {
@@ -269,7 +249,7 @@
   }
   .msg-cell { color: var(--muted); max-width: 260px; }
 
-  /* ── Toast ────────────────────────────────────────────── */
+  /* ── Toast ── */
   .toast {
     position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
     background: var(--surface2); border: 1px solid var(--border); border-radius: 10px;
@@ -281,49 +261,43 @@
   .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   .toast.ok  .ti { color: var(--green); }
   .toast.err .ti { color: var(--accent); }
+  .toast.info .ti { color: var(--gold); }
 
-  /* ── Empty state ──────────────────────────────────────── */
   .empty { text-align: center; padding: 48px 24px; color: var(--muted); }
   .empty .ei { font-size: 2.5rem; margin-bottom: 12px; }
   .empty p { font-size: .9rem; }
 
-  /* ── Scrollbar ─────────────────────────────────────────── */
   ::-webkit-scrollbar { width: 6px; }
   ::-webkit-scrollbar-track { background: var(--bg); }
   ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
 
-  /* ── Separator ────────────────────────────────────────── */
   .sep { height: 1px; background: var(--border); margin: 24px 0; }
-
   .overline { font-size: .72rem; font-weight: 600; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; margin-bottom: 16px; }
 </style>
 </head>
 <body>
 <div class="app">
 
-  <!-- Header -->
   <header>
     <div class="logo">
       <span class="dot"></span>
       Sistema de Vez
     </div>
     <div class="header-links">
-      <a href="vez.html" target="_blank" class="btn-link">📺 Painel das Vendedoras ↗</a>
+      <a href="vez.html" target="_blank" class="btn-link">📺 Painel dos Vendedor(a)s ↗</a>
     </div>
   </header>
 
-  <!-- Tabs -->
   <div class="tabs">
-    <button class="tab active" onclick="setTab('atendimento')">📋 Atendimento</button>
-    <button class="tab" onclick="setTab('vendedoras')">👤 Vendedoras</button>
-    <button class="tab" onclick="setTab('historico')">📜 Histórico</button>
+    <button class="tab active" onclick="setTab('atendimento', this)">📋 Atendimento</button>
+    <button class="tab" onclick="setTab('vendedoras', this)">👤 Vendedor(a)s</button>
+    <button class="tab" onclick="setTab('historico', this)">📜 Histórico</button>
   </div>
 
   <!-- ══ PAINEL ATENDIMENTO ══ -->
   <div id="tab-atendimento" class="panel active">
 
-    <!-- Vez atual -->
-    <div class="vez-hero" id="vezHero">
+    <div class="vez-hero">
       <div class="vez-avatar" id="vezAvatar">?</div>
       <div class="vez-info">
         <div class="vez-label">Na vez agora</div>
@@ -334,26 +308,28 @@
       <button class="btn-pular" onclick="pularVez()">⏭ Pular vez</button>
     </div>
 
-    <!-- Formulário -->
     <div class="card">
       <div class="card-title"><span class="icon">📝</span> Dados do Contato</div>
 
-      <!-- Aviso grupo -->
       <div class="grupo-config" id="grupoConfigAviso" style="display:none">
         <span class="gc-icon">👥</span>
-        <span>Grupo configurado — o segundo botão enviará para o grupo de vendedoras.
-          <a href="#" onclick="setTab('vendedoras');return false">Alterar link →</a>
+        <span>Grupo configurado — ao enviar, a mensagem também será copiada para o grupo.
+          <a href="#" onclick="setTab('vendedoras',document.querySelector('.tab:nth-child(2)'));return false">Alterar link →</a>
         </span>
       </div>
-      <div class="grupo-config" id="grupoSemConfig" style="background:rgba(232,56,79,.06);border-color:rgba(232,56,79,.2)">
+      <div class="grupo-config warn" id="grupoSemConfig">
         <span class="gc-icon">⚠️</span>
-        <span>Grupo não configurado. <a href="#" onclick="setTab('vendedoras');return false">Configure o link do grupo →</a></span>
+        <span>Grupo não configurado. <a href="#" onclick="setTab('vendedoras',document.querySelector('.tab:nth-child(2)'));return false">Configure o link do grupo →</a></span>
       </div>
 
       <div class="form-grid">
         <div class="form-group">
           <label>Nome / Empresa</label>
-          <input type="text" id="fContato" placeholder="Ex: João Silva / Loja ABC" />
+          <input type="text" id="fNomeEmpresa" placeholder="Ex: João Silva / Loja ABC" />
+        </div>
+        <div class="form-group">
+          <label>Telefone de contato</label>
+          <input type="tel" id="fTelContato" placeholder="(65) 99999-9999" maxlength="15" oninput="mascaraTel(this)" />
         </div>
         <div class="form-group full">
           <label>Mensagens enviadas pelo contato</label>
@@ -361,24 +337,21 @@
         </div>
       </div>
 
-      <div class="btn-row">
-        <button class="btn-primary" onclick="dispararWhatsapp()">
-          <span class="wpp-icon">📲</span>
-          Enviar para Vendedora
-        </button>
-        <button class="btn-grupo" id="btnGrupo" onclick="dispararGrupo()" disabled title="Configure o link do grupo na aba Vendedoras">
-          <span>👥</span>
-          Enviar para o Grupo
-        </button>
-      </div>
+      <button class="btn-primary" onclick="disparar()">
+        <span class="wpp-icon">📲</span>
+        <span>
+          Enviar para Vendedor(a) e copiar para o Grupo
+          <span class="btn-hint" id="btnHint">abre o WhatsApp e copia a mensagem para o grupo</span>
+        </span>
+      </button>
     </div>
 
   </div>
 
-  <!-- ══ PAINEL VENDEDORAS ══ -->
+  <!-- ══ PAINEL VENDEDOR(A)S ══ -->
   <div id="tab-vendedoras" class="panel">
     <div class="card">
-      <div class="card-title"><span class="icon">✚</span> Cadastrar Vendedora</div>
+      <div class="card-title"><span class="icon">✚</span> Cadastrar Vendedor(a)</div>
       <div class="form-grid">
         <div class="form-group">
           <label>Nome</label>
@@ -386,90 +359,99 @@
         </div>
         <div class="form-group">
           <label>WhatsApp (com DDD)</label>
-          <input type="tel" id="vTel" placeholder="65 99999-9999" />
+          <input type="tel" id="vTel" placeholder="(65) 99999-9999" maxlength="15" oninput="mascaraTel(this)" />
         </div>
       </div>
       <input type="hidden" id="vId" />
-      <button class="btn-primary" style="margin-top:16px" onclick="salvarVendedora()">
-        💾 Salvar Vendedora
+      <button class="btn-primary" style="margin-top:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 24px rgba(232,56,79,.35)" onclick="salvarVendedora()">
+        💾 Salvar Vendedor(a)
       </button>
     </div>
 
-    <div class="overline">Link do Grupo de Vendedoras</div>
+    <div class="overline">Link do Grupo de Vendedor(a)s</div>
     <div class="grupo-link-card">
-      <span class="gc-icon" style="font-size:1.4rem">👥</span>
-      <span class="gl-label">Cole o link <code>wa.me/g/…</code> do grupo</span>
+      <span style="font-size:1.4rem">👥</span>
+      <span class="gl-label">Link <code>chat.whatsapp.com/…</code></span>
       <input type="url" id="gLink" placeholder="https://chat.whatsapp.com/XXXXXXX" />
       <button class="btn-save-link" onclick="salvarLinkGrupo()">💾 Salvar</button>
     </div>
 
     <div class="sep"></div>
-    <div class="overline">Vendedoras cadastradas</div>
+    <div class="overline">Vendedor(a)s cadastrados</div>
     <div class="vendedoras-grid" id="vendedorasGrid">
-      <div class="empty"><div class="ei">👤</div><p>Nenhuma vendedora cadastrada.</p></div>
+      <div class="empty"><div class="ei">👤</div><p>Nenhum vendedor(a) cadastrado.</p></div>
     </div>
   </div>
 
   <!-- ══ PAINEL HISTÓRICO ══ -->
   <div id="tab-historico" class="panel">
     <div class="card" style="padding:0;overflow:hidden">
-      <table class="hist-table" id="histTable">
+      <table class="hist-table">
         <thead>
           <tr>
             <th>Data/Hora</th>
-            <th>Vendedora</th>
-            <th>Contato</th>
+            <th>Vendedor(a)</th>
+            <th>Cliente / Empresa</th>
+            <th>Telefone</th>
             <th>Mensagem</th>
           </tr>
         </thead>
         <tbody id="histBody">
-          <tr><td colspan="4"><div class="empty"><div class="ei">📜</div><p>Carregando histórico…</p></div></td></tr>
+          <tr><td colspan="5"><div class="empty"><div class="ei">📜</div><p>Carregando histórico…</p></div></td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
-</div><!-- /app -->
+</div>
 
-<!-- Toast -->
 <div class="toast" id="toast">
   <span class="ti" id="toastIcon">✓</span>
   <span id="toastMsg"></span>
 </div>
 
 <script>
-// ──────────────────────────────────────────────────────────
-//  CONFIG – cole a URL do seu Web App do Apps Script aqui
-// ──────────────────────────────────────────────────────────
+// ── CONFIG ─────────────────────────────────────────────────
 const API = "https://script.google.com/macros/s/AKfycbzDR1XnIS66iQnPY_3XLxeX-0d7TB7M0snf0OhAJhG7jhDV5PgMw8_Fn_y2j-6udDDoaQ/exec";
 
-// ─── Estado local ──────────────────────────────────────────
-let vendedoras   = [];
-let statusVez    = null;
-let grupoLink    = localStorage.getItem("grupoLink") || "";
+// ── Estado ─────────────────────────────────────────────────
+let vendedoras = [];
+let statusVez  = null;
+let grupoLink  = localStorage.getItem("grupoLink") || "";
 
-// ─── Init ──────────────────────────────────────────────────
+// ── Init ───────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   carregarStatus();
   atualizarUIGrupo();
   setInterval(carregarStatus, 30000);
 });
 
-// ─── Tabs ──────────────────────────────────────────────────
-function setTab(nome) {
+// ── Máscara de telefone ────────────────────────────────────
+function mascaraTel(el) {
+  let v = el.value.replace(/\D/g, "").slice(0, 11);
+  if (v.length > 10) {
+    v = v.replace(/^(\d{2})(\d{5})(\d{4})$/, "($1) $2-$3");
+  } else if (v.length > 6) {
+    v = v.replace(/^(\d{2})(\d{4})(\d*)$/, "($1) $2-$3");
+  } else if (v.length > 2) {
+    v = v.replace(/^(\d{2})(\d*)$/, "($1) $2");
+  }
+  el.value = v;
+}
+
+// ── Tabs ───────────────────────────────────────────────────
+function setTab(nome, el) {
   document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.getElementById("tab-" + nome).classList.add("active");
-  event.currentTarget.classList.add("active");
-
+  if (el) el.classList.add("active");
   if (nome === "vendedoras") { carregarVendedoras(); atualizarUIGrupo(); }
   if (nome === "historico")  carregarHistorico();
 }
 
-// ─── API ───────────────────────────────────────────────────
+// ── API ────────────────────────────────────────────────────
 async function get(params) {
-  const url = API + "?" + new URLSearchParams(params);
-  const r   = await fetch(url);
+  const r = await fetch(API + "?" + new URLSearchParams(params));
   return r.json();
 }
 async function post(body) {
@@ -477,7 +459,7 @@ async function post(body) {
   return r.json();
 }
 
-// ─── Status / Vez ──────────────────────────────────────────
+// ── Status / Vez ───────────────────────────────────────────
 async function carregarStatus() {
   try {
     const data = await get({ acao: "status_vez" });
@@ -489,18 +471,17 @@ async function carregarStatus() {
 function renderVez(data) {
   const atual = data.atual;
   if (!atual) {
-    document.getElementById("vezNome").textContent = "Nenhuma vendedora cadastrada";
+    document.getElementById("vezNome").textContent   = "Nenhum vendedor(a) cadastrado";
     document.getElementById("vezAvatar").textContent = "?";
     return;
   }
-  const initials = nomeParaIniciais(atual.nome);
-  document.getElementById("vezAvatar").textContent = initials;
+  document.getElementById("vezAvatar").textContent = iniciais(atual.nome);
   document.getElementById("vezNome").textContent   = atual.nome;
-  document.getElementById("vezTel").textContent    = formatarTelExibicao(atual.telefone);
+  document.getElementById("vezTel").textContent    = formatTel(atual.telefone);
 }
 
 async function pularVez() {
-  if (!confirm("Deseja pular a vez da vendedora atual?")) return;
+  if (!confirm("Deseja pular a vez do vendedor(a) atual?")) return;
   const r = await post({ acao: "pular_vez" });
   if (r.ok) {
     toast("✓", "Vez pulada com sucesso!", "ok");
@@ -510,68 +491,70 @@ async function pularVez() {
   }
 }
 
-// ─── Disparar WhatsApp ─────────────────────────────────────
-async function dispararWhatsapp() {
-  const contato  = document.getElementById("fContato").value.trim();
-  const mensagem = document.getElementById("fMensagem").value.trim();
+// ── Disparar (único botão) ─────────────────────────────────
+async function disparar() {
+  const nomeEmpresa = document.getElementById("fNomeEmpresa").value.trim();
+  const telContato  = document.getElementById("fTelContato").value.trim();
+  const mensagem    = document.getElementById("fMensagem").value.trim();
 
-  if (!contato)  { toast("✕", "Informe o nome do contato / empresa", "err"); return; }
-  if (!mensagem) { toast("✕", "Informe as mensagens do contato", "err"); return; }
+  if (!nomeEmpresa) { toast("✕", "Informe o nome do contato / empresa", "err"); return; }
+  if (!telContato)  { toast("✕", "Informe o telefone de contato", "err"); return; }
+  if (!mensagem)    { toast("✕", "Informe as mensagens do contato", "err"); return; }
   if (!statusVez?.atual?.telefone) {
-    toast("✕", "Nenhuma vendedora disponível na vez", "err"); return;
+    toast("✕", "Nenhum vendedor(a) disponível na vez", "err"); return;
   }
 
   const { nome: vNome, telefone: vTel, id: vId } = statusVez.atual;
 
-  // Monta mensagem
-  const texto = encodeURIComponent(
+  // Texto da mensagem para o vendedor(a)
+  const msgVendedor = 
     `*Novo contato para orçamento* 📋\n\n` +
-    `*Cliente/Empresa:* ${contato}\n\n` +
-    `*Mensagens do cliente:*\n${mensagem}`
-  );
-  const tel   = vTel.replace(/\D/g,"");
-  const url   = `https://wa.me/55${tel}?text=${texto}`;
+    `*Cliente/Empresa:* ${nomeEmpresa}\n` +
+    `*Telefone:* ${telContato}\n\n` +
+    `*Mensagens do cliente:*\n${mensagem}`;
+
+  // Texto para o grupo (com nome do vendedor(a))
+  const msgGrupo =
+    `📋 *Registro de atendimento*\n\n` +
+    `*Vendedor(a):* ${vNome}\n` +
+    `*Cliente/Empresa:* ${nomeEmpresa}\n` +
+    `*Telefone:* ${telContato}\n\n` +
+    `*Mensagens do cliente:*\n${mensagem}`;
 
   // Registra no histórico
-  await post({ acao: "registrar_atendimento", vendedora_id: vId, vendedora_nome: vNome, contato, mensagem });
+  await post({
+    acao: "registrar_atendimento",
+    vendedora_id: vId,
+    vendedora_nome: vNome,
+    contato: nomeEmpresa,
+    telefone_contato: telContato,
+    mensagem
+  });
 
-  // Abre WhatsApp
-  window.open(url, "_blank");
+  // Copia mensagem do grupo para área de transferência (se grupo configurado)
+  if (grupoLink) {
+    try { await navigator.clipboard.writeText(msgGrupo); } catch(_) {}
+  }
 
-  // Limpa form e atualiza vez
-  document.getElementById("fContato").value   = "";
-  document.getElementById("fMensagem").value  = "";
-  toast("✓", `Enviado para ${vNome}! Vez avançada.`, "ok");
+  // Abre WhatsApp do vendedor(a)
+  const tel = vTel.replace(/\D/g, "");
+  window.open(`https://wa.me/55${tel}?text=${encodeURIComponent(msgVendedor)}`, "_blank");
+
+  // Limpa form e atualiza
+  document.getElementById("fNomeEmpresa").value = "";
+  document.getElementById("fTelContato").value  = "";
+  document.getElementById("fMensagem").value    = "";
+
+  if (grupoLink) {
+    toast("✓", `WhatsApp de ${vNome} aberto! Mensagem copiada — cole no grupo.`, "ok");
+  } else {
+    toast("✓", `Enviado para ${vNome}! Vez avançada.`, "ok");
+  }
+
   await carregarStatus();
 }
 
-// ─── Disparar para o Grupo ────────────────────────────────
-function dispararGrupo() {
-  const contato  = document.getElementById("fContato").value.trim();
-  const mensagem = document.getElementById("fMensagem").value.trim();
-
-  if (!contato)   { toast("✕", "Informe o nome do contato / empresa", "err"); return; }
-  if (!mensagem)  { toast("✕", "Informe as mensagens do contato", "err"); return; }
-  if (!grupoLink) { toast("✕", "Configure o link do grupo na aba Vendedoras", "err"); return; }
-
-  const vNome = statusVez?.atual?.nome || "Vendedora";
-  const texto = encodeURIComponent(
-    `*📋 Registro de contato*\n\n` +
-    `*Vendedora:* ${vNome}\n` +
-    `*Cliente/Empresa:* ${contato}\n\n` +
-    `*Mensagens do cliente:*\n${mensagem}`
-  );
-
-  // wa.me/g/HASH não aceita ?text= — abre o grupo direto e o texto fica na área de transferência
-  navigator.clipboard.writeText(
-    `📋 Registro de contato\n\nVendedora: ${vNome}\nCliente/Empresa: ${contato}\n\nMensagens do cliente:\n${mensagem}`
-  ).catch(() => {});
-
-  window.open(grupoLink, "_blank");
-  toast("✓", "Grupo aberto! Mensagem copiada — cole no grupo.", "ok");
-}
-
-// ─── Link do Grupo ────────────────────────────────────────
+// ── Link do Grupo ──────────────────────────────────────────
 function salvarLinkGrupo() {
   const val = document.getElementById("gLink").value.trim();
   if (!val) { toast("✕", "Cole o link do grupo", "err"); return; }
@@ -582,24 +565,23 @@ function salvarLinkGrupo() {
 }
 
 function atualizarUIGrupo() {
-  const btn    = document.getElementById("btnGrupo");
   const aviso  = document.getElementById("grupoConfigAviso");
   const semCfg = document.getElementById("grupoSemConfig");
   const input  = document.getElementById("gLink");
+  const hint   = document.getElementById("btnHint");
   if (grupoLink) {
-    btn.disabled       = false;
-    btn.title          = "Enviar registro para o grupo de vendedoras";
     aviso.style.display  = "flex";
     semCfg.style.display = "none";
     if (input) input.value = grupoLink;
+    if (hint)  hint.textContent = "abre o WhatsApp e copia a mensagem para o grupo";
   } else {
-    btn.disabled         = true;
     aviso.style.display  = "none";
     semCfg.style.display = "flex";
+    if (hint)  hint.textContent = "configure o link do grupo para envio automático";
   }
 }
 
-// ─── Vendedoras ────────────────────────────────────────────
+// ── Vendedor(a)s ───────────────────────────────────────────
 async function carregarVendedoras() {
   const data = await get({ acao: "listar_vendedoras" });
   vendedoras = data.vendedoras || [];
@@ -609,7 +591,7 @@ async function carregarVendedoras() {
 function renderVendedoras() {
   const grid = document.getElementById("vendedorasGrid");
   if (!vendedoras.length) {
-    grid.innerHTML = `<div class="empty"><div class="ei">👤</div><p>Nenhuma vendedora cadastrada.</p></div>`;
+    grid.innerHTML = `<div class="empty"><div class="ei">👤</div><p>Nenhum vendedor(a) cadastrado.</p></div>`;
     return;
   }
   const vezIdx = statusVez?.vezIndex ?? -1;
@@ -617,13 +599,13 @@ function renderVendedoras() {
   grid.innerHTML = vendedoras.map((v, i) => {
     const naVez = (i === vezIdx % total);
     return `
-    <div class="vendedora-card ${naVez ? 'na-vez' : ''}">
-      <div class="v-avatar">${nomeParaIniciais(v.nome)}</div>
+    <div class="vendedora-card ${naVez ? "na-vez" : ""}">
+      <div class="v-avatar">${iniciais(v.nome)}</div>
       <div class="v-info">
         <div class="v-nome">${v.nome}</div>
-        <div class="v-tel">${formatarTelExibicao(v.telefone)}</div>
+        <div class="v-tel">${formatTel(v.telefone)}</div>
       </div>
-      ${naVez ? '<span class="v-vez-tag">NA VEZ</span>' : ''}
+      ${naVez ? '<span class="v-vez-tag">NA VEZ</span>' : ""}
       <div class="v-actions">
         <button class="btn-icon" onclick="editarVendedora('${v.id}')" title="Editar">✏️</button>
         <button class="btn-icon del" onclick="deletarVendedora('${v.id}')" title="Remover">🗑</button>
@@ -637,7 +619,6 @@ async function salvarVendedora() {
   const tel  = document.getElementById("vTel").value.trim();
   const id   = document.getElementById("vId").value;
   if (!nome || !tel) { toast("✕", "Preencha nome e telefone", "err"); return; }
-
   const r = await post({ acao: "salvar_vendedora", id: id || undefined, nome, telefone: tel });
   if (r.ok) {
     toast("✓", r.mensagem, "ok");
@@ -646,40 +627,36 @@ async function salvarVendedora() {
     document.getElementById("vId").value   = "";
     await carregarVendedoras();
     await carregarStatus();
-  } else {
-    toast("✕", r.erro, "err");
-  }
+  } else { toast("✕", r.erro, "err"); }
 }
 
 function editarVendedora(id) {
   const v = vendedoras.find(x => x.id === id);
   if (!v) return;
   document.getElementById("vNome").value = v.nome;
-  document.getElementById("vTel").value  = v.telefone;
+  document.getElementById("vTel").value  = formatTel(v.telefone);
   document.getElementById("vId").value   = v.id;
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 async function deletarVendedora(id) {
   const v = vendedoras.find(x => x.id === id);
-  if (!confirm(`Remover ${v?.nome || "vendedora"}?`)) return;
+  if (!confirm(`Remover ${v?.nome || "vendedor(a)"}?`)) return;
   const r = await post({ acao: "deletar_vendedora", id });
   if (r.ok) {
-    toast("✓", "Vendedora removida", "ok");
+    toast("✓", "Vendedor(a) removido", "ok");
     await carregarVendedoras();
     await carregarStatus();
-  } else {
-    toast("✕", r.erro, "err");
-  }
+  } else { toast("✕", r.erro, "err"); }
 }
 
-// ─── Histórico ─────────────────────────────────────────────
+// ── Histórico ──────────────────────────────────────────────
 async function carregarHistorico() {
   const data = await get({ acao: "historico" });
   const hist = data.historico || [];
   const body = document.getElementById("histBody");
   if (!hist.length) {
-    body.innerHTML = `<tr><td colspan="4"><div class="empty"><div class="ei">📜</div><p>Nenhum atendimento registrado ainda.</p></div></td></tr>`;
+    body.innerHTML = `<tr><td colspan="5"><div class="empty"><div class="ei">📜</div><p>Nenhum atendimento registrado ainda.</p></div></td></tr>`;
     return;
   }
   body.innerHTML = hist.map(h => `
@@ -687,16 +664,17 @@ async function carregarHistorico() {
       <td style="white-space:nowrap;color:var(--muted);font-size:.82rem">${h.timestamp}</td>
       <td><span class="badge-nome">${h.vendedora_nome}</span></td>
       <td style="font-weight:500">${h.contato}</td>
+      <td style="color:var(--muted);font-size:.85rem">${h.telefone_contato || "—"}</td>
       <td class="msg-cell">${h.mensagem.substring(0,120)}${h.mensagem.length>120?"…":""}</td>
     </tr>
   `).join("");
 }
 
-// ─── Helpers ───────────────────────────────────────────────
-function nomeParaIniciais(nome = "") {
+// ── Helpers ────────────────────────────────────────────────
+function iniciais(nome = "") {
   return nome.split(" ").slice(0,2).map(n => n[0]?.toUpperCase() || "").join("");
 }
-function formatarTelExibicao(tel = "") {
+function formatTel(tel = "") {
   const n = tel.replace(/\D/g,"");
   if (n.length === 11) return `(${n.slice(0,2)}) ${n.slice(2,7)}-${n.slice(7)}`;
   if (n.length === 10) return `(${n.slice(0,2)}) ${n.slice(2,6)}-${n.slice(6)}`;
@@ -710,7 +688,7 @@ function toast(icon, msg, tipo) {
   document.getElementById("toastMsg").textContent  = msg;
   el.className = "toast show " + tipo;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => el.className = "toast", 3500);
+  toastTimer = setTimeout(() => el.className = "toast", 4000);
 }
 </script>
 </body>
