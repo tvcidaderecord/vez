@@ -311,17 +311,6 @@
     <div class="card">
       <div class="card-title"><span class="icon">📝</span> Dados do Contato</div>
 
-      <div class="grupo-config" id="grupoConfigAviso" style="display:none">
-        <span class="gc-icon">👥</span>
-        <span>Grupo configurado — ao enviar, a mensagem também será copiada para o grupo.
-          <a href="#" onclick="setTab('vendedoras',document.querySelector('.tab:nth-child(2)'));return false">Alterar link →</a>
-        </span>
-      </div>
-      <div class="grupo-config warn" id="grupoSemConfig">
-        <span class="gc-icon">⚠️</span>
-        <span>Grupo não configurado. <a href="#" onclick="setTab('vendedoras',document.querySelector('.tab:nth-child(2)'));return false">Configure o link do grupo →</a></span>
-      </div>
-
       <div class="form-grid">
         <div class="form-group">
           <label>Nome / Empresa</label>
@@ -340,8 +329,8 @@
       <button class="btn-primary" onclick="disparar()">
         <span class="wpp-icon">📲</span>
         <span>
-          Enviar para Vendedor(a) e copiar para o Grupo
-          <span class="btn-hint" id="btnHint">abre o WhatsApp e copia a mensagem para o grupo</span>
+          Enviar para Vendedor(a)
+          <span class="btn-hint">abre o WhatsApp e copia a mensagem para o grupo</span>
         </span>
       </button>
     </div>
@@ -366,14 +355,6 @@
       <button class="btn-primary" style="margin-top:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));box-shadow:0 4px 24px rgba(232,56,79,.35)" onclick="salvarVendedora()">
         💾 Salvar Vendedor(a)
       </button>
-    </div>
-
-    <div class="overline">Link do Grupo de Vendedor(a)s</div>
-    <div class="grupo-link-card">
-      <span style="font-size:1.4rem">👥</span>
-      <span class="gl-label">Link <code>chat.whatsapp.com/…</code></span>
-      <input type="url" id="gLink" placeholder="https://chat.whatsapp.com/XXXXXXX" />
-      <button class="btn-save-link" onclick="salvarLinkGrupo()">💾 Salvar</button>
     </div>
 
     <div class="sep"></div>
@@ -422,7 +403,6 @@ let grupoLink  = localStorage.getItem("grupoLink") || "";
 // ── Init ───────────────────────────────────────────────────
 document.addEventListener("DOMContentLoaded", () => {
   carregarStatus();
-  atualizarUIGrupo();
   setInterval(carregarStatus, 30000);
 });
 
@@ -445,7 +425,7 @@ function setTab(nome, el) {
   document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
   document.getElementById("tab-" + nome).classList.add("active");
   if (el) el.classList.add("active");
-  if (nome === "vendedoras") { carregarVendedoras(); atualizarUIGrupo(); }
+  if (nome === "vendedoras") { carregarVendedoras(); }
   if (nome === "historico")  carregarHistorico();
 }
 
@@ -491,7 +471,7 @@ async function pularVez() {
   }
 }
 
-// ── Disparar (único botão) ─────────────────────────────────
+// ── Disparar ───────────────────────────────────────────────
 async function disparar() {
   const nomeEmpresa = document.getElementById("fNomeEmpresa").value.trim();
   const telContato  = document.getElementById("fTelContato").value.trim();
@@ -506,20 +486,23 @@ async function disparar() {
 
   const { nome: vNome, telefone: vTel, id: vId } = statusVez.atual;
 
-  // Texto da mensagem para o vendedor(a)
-  const msgVendedor = 
+  // Mensagem para o vendedor(a)
+  const msgVendedor =
     `*Novo contato para orçamento* 📋\n\n` +
     `*Cliente/Empresa:* ${nomeEmpresa}\n` +
     `*Telefone:* ${telContato}\n\n` +
     `*Mensagens do cliente:*\n${mensagem}`;
 
-  // Texto para o grupo (com nome do vendedor(a))
+  // Mensagem para o grupo (copiada na área de transferência)
   const msgGrupo =
     `📋 *Registro de atendimento*\n\n` +
     `*Vendedor(a):* ${vNome}\n` +
     `*Cliente/Empresa:* ${nomeEmpresa}\n` +
     `*Telefone:* ${telContato}\n\n` +
     `*Mensagens do cliente:*\n${mensagem}`;
+
+  // Copia mensagem do grupo para área de transferência
+  try { await navigator.clipboard.writeText(msgGrupo); } catch(_) {}
 
   // Registra no histórico
   await post({
@@ -531,11 +514,6 @@ async function disparar() {
     mensagem
   });
 
-  // Copia mensagem do grupo para área de transferência (se grupo configurado)
-  if (grupoLink) {
-    try { await navigator.clipboard.writeText(msgGrupo); } catch(_) {}
-  }
-
   // Abre WhatsApp do vendedor(a)
   const tel = vTel.replace(/\D/g, "");
   window.open(`https://wa.me/55${tel}?text=${encodeURIComponent(msgVendedor)}`, "_blank");
@@ -545,40 +523,8 @@ async function disparar() {
   document.getElementById("fTelContato").value  = "";
   document.getElementById("fMensagem").value    = "";
 
-  if (grupoLink) {
-    toast("✓", `WhatsApp de ${vNome} aberto! Mensagem copiada — cole no grupo.`, "ok");
-  } else {
-    toast("✓", `Enviado para ${vNome}! Vez avançada.`, "ok");
-  }
-
+  toast("✓", `WhatsApp de ${vNome} aberto! Mensagem copiada — cole no grupo.`, "ok");
   await carregarStatus();
-}
-
-// ── Link do Grupo ──────────────────────────────────────────
-function salvarLinkGrupo() {
-  const val = document.getElementById("gLink").value.trim();
-  if (!val) { toast("✕", "Cole o link do grupo", "err"); return; }
-  grupoLink = val;
-  localStorage.setItem("grupoLink", val);
-  atualizarUIGrupo();
-  toast("✓", "Link do grupo salvo!", "ok");
-}
-
-function atualizarUIGrupo() {
-  const aviso  = document.getElementById("grupoConfigAviso");
-  const semCfg = document.getElementById("grupoSemConfig");
-  const input  = document.getElementById("gLink");
-  const hint   = document.getElementById("btnHint");
-  if (grupoLink) {
-    aviso.style.display  = "flex";
-    semCfg.style.display = "none";
-    if (input) input.value = grupoLink;
-    if (hint)  hint.textContent = "abre o WhatsApp e copia a mensagem para o grupo";
-  } else {
-    aviso.style.display  = "none";
-    semCfg.style.display = "flex";
-    if (hint)  hint.textContent = "configure o link do grupo para envio automático";
-  }
 }
 
 // ── Vendedor(a)s ───────────────────────────────────────────
