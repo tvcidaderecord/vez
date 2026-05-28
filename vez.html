@@ -221,7 +221,7 @@
 
   <!-- Rodapé -->
   <div class="rodape">
-    Atualiza automaticamente a cada 15 segundos <span>•</span> <span id="lastUpdate">—</span>
+    Atualiza automaticamente a cada 5 segundos <span>•</span> <span id="lastUpdate">—</span>
   </div>
 
 </div>
@@ -296,7 +296,12 @@ async function atualizar() {
 }
 
 atualizar();
-setInterval(atualizar, 15000);
+setInterval(atualizar, 5000);
+
+// Atualiza imediatamente quando o index.html sinalizar mudança de vez
+window.addEventListener("storage", (e) => {
+  if (e.key === "vezAtualizada") atualizar();
+});
 </script>
 </body>
 </html>
