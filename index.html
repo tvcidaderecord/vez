@@ -464,6 +464,7 @@ async function pularVez() {
   if (!confirm("Deseja pular a vez do vendedor(a) atual?")) return;
   const r = await post({ acao: "pular_vez" });
   if (r.ok) {
+    localStorage.setItem("vezAtualizada", Date.now());
     toast("✓", "Vez pulada com sucesso!", "ok");
     await carregarStatus();
   } else {
@@ -524,6 +525,7 @@ async function disparar() {
   document.getElementById("fMensagem").value    = "";
 
   toast("✓", `WhatsApp de ${vNome} aberto! Mensagem copiada — cole no grupo.`, "ok");
+  localStorage.setItem("vezAtualizada", Date.now());
   await carregarStatus();
 }
 
