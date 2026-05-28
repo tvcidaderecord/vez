@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Quem está na vez?</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:       #07070f;
+    --s1:       #0f0f1c;
+    --s2:       #181828;
+    --border:   #252538;
+    --accent:   #e8384f;
+    --accent2:  #ff6b35;
+    --green:    #2ecc71;
+    --gold:     #f5c842;
+    --blue:     #4a9eff;
+    --text:     #f0f0f8;
+    --muted:    #6060a0;
+    --font:     'Syne', sans-serif;
+    --body:     'DM Sans', sans-serif;
+  }
+
+  html, body { height: 100%; overflow: hidden; }
+  body {
+    font-family: var(--body);
+    background: var(--bg);
+    color: var(--text);
+    display: flex; flex-direction: column;
+    align-items: stretch; justify-content: stretch;
+    min-height: 100vh; overflow: hidden;
+  }
+
+  /* Noise */
+  body::before {
+    content: '';
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E");
+  }
+
+  /* Grid layout */
+  .screen {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-rows: auto 1fr auto auto;
+    height: 100vh;
+    padding: 28px;
+    gap: 20px;
+    max-width: 700px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  /* ── Topo ──────────────────────────── */
+  .topo {
+    display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--border); padding-bottom: 16px;
+  }
+  .logo {
+    font-family: var(--font); font-size: 1.1rem; font-weight: 800;
+    letter-spacing: -.01em; color: var(--muted);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .dot-live {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--accent); animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100%{box-shadow:0 0 0 0 rgba(232,56,79,.7)} 60%{box-shadow:0 0 0 7px rgba(232,56,79,0)} }
+
+  .clock {
+    font-family: var(--font); font-size: 1rem; font-weight: 600;
+    color: var(--muted); letter-spacing: .04em;
+  }
+
+  /* ── Card Principal (NA VEZ) ──────── */
+  .main-card {
+    background: linear-gradient(145deg, #1a0820 0%, #200c2c 50%, #0f1a30 100%);
+    border: 1px solid rgba(232,56,79,.3);
+    border-radius: 24px;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    padding: 40px 32px;
+    position: relative; overflow: hidden;
+    box-shadow: 0 0 80px rgba(232,56,79,.12), inset 0 1px 0 rgba(255,255,255,.05);
+    animation: cardIn .6s cubic-bezier(.34,1.56,.64,1);
+  }
+  @keyframes cardIn { from{opacity:0;transform:scale(.95)} to{opacity:1;transform:scale(1)} }
+
+  .main-card::after {
+    content: '';
+    position: absolute; bottom: -60px; right: -60px;
+    width: 240px; height: 240px; border-radius: 50%;
+    background: radial-gradient(circle, rgba(232,56,79,.15), transparent 70%);
+    pointer-events: none;
+  }
+
+  .label-vez {
+    font-family: var(--font); font-size: .7rem; font-weight: 700;
+    letter-spacing: .2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 20px;
+    background: rgba(232,56,79,.1); border: 1px solid rgba(232,56,79,.25);
+    border-radius: 99px; padding: 4px 18px;
+    display: inline-block;
+  }
+
+  .main-avatar {
+    width: 110px; height: 110px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font); font-size: 2.8rem; font-weight: 900; color: #fff;
+    margin-bottom: 24px;
+    box-shadow: 0 0 60px rgba(232,56,79,.5), 0 0 120px rgba(232,56,79,.2);
+    animation: avatarGlow 3s ease-in-out infinite;
+  }
+  @keyframes avatarGlow {
+    0%,100% { box-shadow: 0 0 40px rgba(232,56,79,.5), 0 0 80px rgba(232,56,79,.15); }
+    50%      { box-shadow: 0 0 70px rgba(232,56,79,.7), 0 0 140px rgba(232,56,79,.25); }
+  }
+
+  .main-nome {
+    font-family: var(--font); font-size: clamp(2rem, 6vw, 3rem);
+    font-weight: 900; line-height: 1;
+    background: linear-gradient(135deg, #fff 40%, #ffaaaa);
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
+  }
+
+  .main-tel {
+    font-size: .95rem; color: var(--muted);
+    font-weight: 400; letter-spacing: .02em;
+  }
+
+  /* ── Cards secundários ────────────── */
+  .cards-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+  }
+
+  .mini-card {
+    background: var(--s1); border: 1px solid var(--border);
+    border-radius: 16px; padding: 18px 20px;
+    position: relative; overflow: hidden;
+  }
+  .mini-card.last { border-color: rgba(46,204,113,.2); }
+  .mini-card.next { border-color: rgba(74,158,255,.2); }
+
+  .mini-label {
+    font-family: var(--font); font-size: .65rem; font-weight: 700;
+    letter-spacing: .15em; text-transform: uppercase; margin-bottom: 10px;
+  }
+  .mini-card.last .mini-label { color: var(--green); }
+  .mini-card.next .mini-label { color: var(--blue); }
+
+  .mini-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font); font-size: 1rem; font-weight: 800; color: #fff;
+    margin-bottom: 8px;
+  }
+  .mini-card.last .mini-avatar { background: linear-gradient(135deg, var(--green), #27ae60); }
+  .mini-card.next .mini-avatar { background: linear-gradient(135deg, var(--blue), #2980b9); }
+
+  .mini-nome {
+    font-family: var(--font); font-size: 1.05rem; font-weight: 700; line-height: 1.1;
+  }
+  .mini-sub { font-size: .78rem; color: var(--muted); margin-top: 3px; }
+
+  /* ── Rodapé ───────────────────────── */
+  .rodape {
+    text-align: center; padding-bottom: 4px;
+    font-size: .72rem; color: var(--muted); letter-spacing: .04em;
+  }
+  .rodape span { color: rgba(255,255,255,.1); }
+
+  .empty-msg {
+    text-align: center; color: var(--muted);
+    font-size: .9rem; padding: 16px 0;
+  }
+
+  /* ── Scroll mobile ─────────────────── */
+  @media(max-height: 600px){
+    html, body { overflow: auto; }
+    .screen { height: auto; }
+  }
+</style>
+</head>
+<body>
+<div class="screen">
+
+  <!-- Topo -->
+  <div class="topo">
+    <div class="logo"><span class="dot-live"></span> Sistema de Vez</div>
+    <div class="clock" id="clock">--:--:--</div>
+  </div>
+
+  <!-- Card principal -->
+  <div class="main-card" id="mainCard">
+    <div class="label-vez">📍 NA VEZ AGORA</div>
+    <div class="main-avatar" id="mainAvatar">?</div>
+    <div class="main-nome" id="mainNome">Carregando…</div>
+    <div class="main-tel" id="mainTel"></div>
+  </div>
+
+  <!-- Última e Próxima -->
+  <div class="cards-row">
+    <div class="mini-card last">
+      <div class="mini-label">✓ Último atendimento</div>
+      <div class="mini-avatar" id="lastAvatar">?</div>
+      <div class="mini-nome" id="lastNome">—</div>
+      <div class="mini-sub" id="lastInfo">nenhum ainda</div>
+    </div>
+    <div class="mini-card next">
+      <div class="mini-label">→ Próxima na vez</div>
+      <div class="mini-avatar" id="nextAvatar">?</div>
+      <div class="mini-nome" id="nextNome">—</div>
+      <div class="mini-sub" id="nextSub">aguardando</div>
+    </div>
+  </div>
+
+  <!-- Rodapé -->
+  <div class="rodape">
+    Atualiza automaticamente a cada 15 segundos <span>•</span> <span id="lastUpdate">—</span>
+  </div>
+
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────
+const API = "https://script.google.com/macros/s/AKfycbzDR1XnIS66iQnPY_3XLxeX-0d7TB7M0snf0OhAJhG7jhDV5PgMw8_Fn_y2j-6udDDoaQ/exec";
+
+// ─── Relógio ──────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  document.getElementById("clock").textContent =
+    now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit", second: "2-digit" });
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ─── Helpers ──────────────────────────────────────────────
+function iniciais(nome = "") {
+  return nome.split(" ").slice(0,2).map(n => n[0]?.toUpperCase() || "").join("");
+}
+
+// ─── Atualizar dados ───────────────────────────────────────
+async function atualizar() {
+  try {
+    const r = await fetch(API + "?acao=status_vez");
+    const d = await r.json();
+
+    // ATUAL
+    if (d.atual) {
+      document.getElementById("mainAvatar").textContent = iniciais(d.atual.nome);
+      document.getElementById("mainNome").textContent   = d.atual.nome;
+      document.getElementById("mainTel").textContent    = "";
+      // Re-trigger animation
+      const mc = document.getElementById("mainCard");
+      mc.style.animation = "none";
+      requestAnimationFrame(() => mc.style.animation = "");
+    } else {
+      document.getElementById("mainNome").textContent = "Nenhuma vendedora";
+      document.getElementById("mainAvatar").textContent = "?";
+    }
+
+    // ÚLTIMA
+    if (d.ultima) {
+      document.getElementById("lastAvatar").textContent = iniciais(d.ultima.vendedora_nome);
+      document.getElementById("lastNome").textContent   = d.ultima.vendedora_nome;
+      document.getElementById("lastInfo").textContent   = d.ultima.contato || "—";
+    } else {
+      document.getElementById("lastAvatar").textContent = "—";
+      document.getElementById("lastNome").textContent   = "—";
+      document.getElementById("lastInfo").textContent   = "nenhum ainda";
+    }
+
+    // PRÓXIMA
+    if (d.proxima) {
+      document.getElementById("nextAvatar").textContent = iniciais(d.proxima.nome);
+      document.getElementById("nextNome").textContent   = d.proxima.nome;
+      document.getElementById("nextSub").textContent    = "aguardando";
+    } else {
+      document.getElementById("nextAvatar").textContent = "—";
+      document.getElementById("nextNome").textContent   = "—";
+    }
+
+    // Timestamp
+    const now = new Date();
+    document.getElementById("lastUpdate").textContent =
+      "Atualizado às " + now.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+
+  } catch(e) {
+    document.getElementById("mainNome").textContent = "Erro de conexão";
+  }
+}
+
+atualizar();
+setInterval(atualizar, 15000);
+</script>
+</body>
+</html>
